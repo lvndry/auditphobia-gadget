@@ -7,9 +7,11 @@ import { promisify } from "util";
 
 const exec_async = promisify(exec);
 
-interface Package {
+export type Version = `${number}.${number}.${number}`;
+
+export interface Package {
   name: string;
-  version: string;
+  version: Version;
 }
 
 export const createAudit = async (auditedPackage: Package) => {

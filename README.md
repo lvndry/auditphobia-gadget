@@ -1,6 +1,14 @@
 # Inspecteur Gadget
 
-Tool to return the output of `yarn audit` for any package
+Tool that returns the output of `yarn audit` of npm packages
+
+## Get started
+
+```bash
+yarn add inspecteur-gadget
+# or
+npm install inspecteur-gadget
+```
 
 ## Usage
 

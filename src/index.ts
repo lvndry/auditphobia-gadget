@@ -14,7 +14,7 @@ export interface Package {
   version: Version;
 }
 
-export const createAudit = async (auditedPackage: Package) => {
+const createPackageDirectory = async (): Promise<string> => {
   let packageID = randomUUID();
   while (existsSync(packageID)) {
     packageID = randomUUID();
@@ -22,14 +22,20 @@ export const createAudit = async (auditedPackage: Package) => {
 
   try {
     await mkdir(packageID);
+    return packageID;
   } catch (err) {
     throw err;
   }
+};
 
+export const createAudit = async (auditedPackage: Package) => {
   const process_dir = process.cwd();
-  const dirPath = resolve(process_dir, packageID);
-  process.chdir(dirPath);
   const PACKAGE_JSON_FILE_NAME = "package.json";
+
+  const packageID = await createPackageDirectory();
+
+  const packagePath = resolve(process_dir, packageID);
+  process.chdir(packagePath);
 
   await writeFile(
     PACKAGE_JSON_FILE_NAME,
@@ -45,10 +51,12 @@ export const createAudit = async (auditedPackage: Package) => {
   try {
     await exec_async("yarn --lock-file");
     const { stdout } = await exec_async("yarn audit --json");
+    process.chdir(process_dir);
     await rm(packageID, { recursive: true });
 
     return stdout;
   } catch (err) {
+    process.chdir(process_dir);
     // yarn audit returns a non-zero exit code if vulnerabilites are found
     // https://classic.yarnpkg.com/lang/en/docs/cli/audit/#toc-yarn-audit
     await rm(packageID, { recursive: true });

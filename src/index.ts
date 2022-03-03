@@ -1,5 +1,4 @@
 import { exec } from "child_process";
-import { error } from "console";
 import { randomUUID } from "crypto";
 import { existsSync } from "fs";
 import { mkdir, writeFile, rm } from "fs/promises";
@@ -18,18 +17,20 @@ export const createAudit = async (auditedPackage: Package) => {
   while (existsSync(packageID)) {
     packageID = randomUUID();
   }
+
   try {
     await mkdir(packageID);
   } catch (err) {
-    error(err);
+    throw err;
   }
 
   const process_dir = process.cwd();
   const dirPath = resolve(process_dir, packageID);
   process.chdir(dirPath);
+  const PACKAGE_JSON_FILE_NAME = "package.json";
 
   await writeFile(
-    "package.json",
+    PACKAGE_JSON_FILE_NAME,
     JSON.stringify({
       name: packageID,
       private: true,
@@ -46,6 +47,8 @@ export const createAudit = async (auditedPackage: Package) => {
 
     return stdout;
   } catch (err) {
+    // yarn audit returns a non-zero exit code if vulnerabilites are found
+    // https://classic.yarnpkg.com/lang/en/docs/cli/audit/#toc-yarn-audit
     await rm(packageID, { recursive: true });
     const { stdout, stderr } = err as { stdout: string; stderr: string };
 

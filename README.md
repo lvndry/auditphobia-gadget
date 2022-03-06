@@ -1,6 +1,6 @@
 # Inspecteur Gadget
 
-Returns the output of `yarn audit` of npm packages
+Returns the output of `yarn audit --json` of npm packages
 
 ## Get started
 

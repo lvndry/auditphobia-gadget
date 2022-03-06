@@ -13,13 +13,13 @@ npm install inspecteur-gadget
 ## Usage
 
 ```ts
-import { createAudit } from "inspecteur-gadget";
+import { generatePacakgeAudit } from "inspecteur-gadget";
 
 const myFunction = async () => {
   try {
-    const audit = await createAudit({
-      name: "create-react-app",
-      version: "5.0.0",
+    const audit = await generatePacakgeAudit({
+      name: "package-name",
+      version: "package-version",
     });
     console.log(audit);
   } catch (err) {

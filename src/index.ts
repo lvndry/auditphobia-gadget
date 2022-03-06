@@ -14,6 +14,67 @@ export interface Package {
   version: Version;
 }
 
+export interface AuditAdvisoryData {
+  resolution: {
+    id: number;
+    path: string;
+    dev: boolean;
+    optional: boolean;
+    bundled: boolean;
+  };
+  advisory: {
+    access: string;
+    created: string;
+    cves: string[];
+    cvss: unknown | null;
+    cwe: string;
+    deleted: boolean | null;
+    findings: { version: Version; path: string[] }[];
+    found_by: { name: string } | null;
+    github_advisory_id: string;
+    id: number;
+    metadata: unknown | null;
+    module_name: string;
+    npm_advisory_id: string;
+    overview: string;
+    patched_versions: string;
+    title: string;
+    recommendation: string;
+    references: string;
+    reported_by: { name: string } | null;
+    severity: string;
+    updated: string;
+    url: string;
+    vulnerable_versions: string;
+  };
+}
+
+export interface AuditAdvisory {
+  type: "auditAdvisory";
+  data: AuditAdvisoryData;
+}
+
+export interface AuditSummaryData {
+  vulnerabilites: {
+    info: number;
+    low: number;
+    moderate: number;
+    high: number;
+    critical: number;
+  };
+  dependencies: number;
+  devDependencies: number;
+  optionalDependencies: number;
+  totalDependencies: number;
+}
+
+export interface AuditSummary {
+  type: "auditSummary";
+  data: AuditSummaryData;
+}
+
+export type Audit = AuditAdvisory | AuditSummary;
+
 const createPackageDirectory = async (): Promise<string> => {
   let packageID = randomUUID();
   while (existsSync(packageID)) {
@@ -28,7 +89,9 @@ const createPackageDirectory = async (): Promise<string> => {
   }
 };
 
-export const createAudit = async (auditedPackage: Package) => {
+export const generatePacakgeAudit = async (
+  auditedPackage: Package
+): Promise<Audit[]> => {
   const process_dir = process.cwd();
   const PACKAGE_JSON_FILE_NAME = "package.json";
 
@@ -49,23 +112,41 @@ export const createAudit = async (auditedPackage: Package) => {
   );
 
   try {
-    await exec_async("yarn --lock-file");
+    await exec_async("yarn install --mode update-lockfile");
     const { stdout } = await exec_async("yarn audit --json");
+
     process.chdir(process_dir);
     await rm(packageID, { recursive: true });
 
-    return stdout;
+    return stdout
+      .split("\n")
+      .map((line) => line.replace(/\\n/gm, ""))
+      .filter((line) => line.length)
+      .map((line) => JSON.parse(line));
   } catch (err) {
     process.chdir(process_dir);
     // yarn audit returns a non-zero exit code if vulnerabilites are found
     // https://classic.yarnpkg.com/lang/en/docs/cli/audit/#toc-yarn-audit
-    await rm(packageID, { recursive: true });
     const { stdout, stderr } = err as { stdout: string; stderr: string };
 
     if (stderr) {
+      await rm(packageID, { recursive: true });
       throw new Error(stderr);
     }
 
-    return stdout;
+    try {
+      const output: Audit[] = stdout
+        .split("\n")
+        .map((line) => line.replace(/\\n/gm, ""))
+        .filter((line) => line.length)
+        .map((line) => JSON.parse(line));
+
+      await rm(packageID, { recursive: true });
+
+      return output;
+    } catch (err) {
+      await rm(packageID, { recursive: true });
+      throw err;
+    }
   }
 };

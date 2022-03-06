@@ -1,16 +1,23 @@
 {
   "name": "inspecteur-gadget",
-  "version": "1.0.0",
+  "description": "Check vulnerablites of npm packages",
+  "version": "1.0.1",
   "license": "MIT",
+  "types": "build/index.d.ts",
+  "main": "build/index.ts",
   "scripts": {
-    "swc": "swc src --out-dir build",
-    "prestart": "rimraf build && yarn swc",
+    "tsc": "tsc",
+    "build": "rimraf build && yarn tsc",
+    "prepare": "yarn build",
+    "prestart": "yarn build",
     "start": "node build/index.js",
     "lint": "eslint ./src/*"
   },
+  "author": {
+    "name": "Landry Monga",
+    "email": "lvndry@protonmail.com"
+  },
   "devDependencies": {
-    "@swc/cli": "^0.1.55",
-    "@swc/core": "^1.2.147",
     "@types/node": "^17.0.21",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",

@@ -10,10 +10,13 @@ const exec_async = promisify(exec);
 export type Version = `${number}.${number}.${number}`;
 
 export interface Package {
+  /** Name of the package */
   name: string;
+  /** version of the package. MAJOR.MINOR.PATCH */
   version: Version;
 }
 
+/** https://yarnpkg.com/api/interfaces/plugin_npm_cli.auditadvisory.html */
 export interface AuditAdvisoryData {
   resolution: {
     id: number;

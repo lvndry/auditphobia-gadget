@@ -84,12 +84,8 @@ const createPackageDirectory = async (): Promise<string> => {
     packageID = randomUUID();
   }
 
-  try {
-    await mkdir(packageID);
-    return packageID;
-  } catch (err) {
-    throw err;
-  }
+  await mkdir(packageID);
+  return packageID;
 };
 
 const formatOutput = (output: string): Audit[] => {

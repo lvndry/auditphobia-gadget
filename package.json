@@ -1,5 +1,5 @@
 {
-  "name": "inspecteur-gadget",
+  "name": "auditphobia-gadget",
   "description": "Check vulnerablites of npm packages",
   "version": "0.0.1",
   "license": "MIT",

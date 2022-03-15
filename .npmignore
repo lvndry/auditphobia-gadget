@@ -2,3 +2,4 @@
 yarn.lock
 *.log
 tsconfig.json
+.editorconfig

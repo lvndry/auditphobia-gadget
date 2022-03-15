@@ -92,6 +92,14 @@ const createPackageDirectory = async (): Promise<string> => {
   }
 };
 
+const formatOutput = (output: string): Audit[] => {
+  return output
+    .split("\n")
+    .map((line) => line.replace(/\\n/gm, ""))
+    .filter((line) => line.length > 0)
+    .map((line) => JSON.parse(line));
+};
+
 export const generatePacakgeAudit = async (
   auditedPackage: Package
 ): Promise<Audit[]> => {
@@ -121,35 +129,18 @@ export const generatePacakgeAudit = async (
     process.chdir(process_dir);
     await rm(packageID, { recursive: true });
 
-    return stdout
-      .split("\n")
-      .map((line) => line.replace(/\\n/gm, ""))
-      .filter((line) => line.length > 0)
-      .map((line) => JSON.parse(line));
+    return formatOutput(stdout);
   } catch (err) {
-    process.chdir(process_dir);
     // yarn audit returns a non-zero exit code if vulnerabilites are found
     // https://classic.yarnpkg.com/lang/en/docs/cli/audit/#toc-yarn-audit
+    process.chdir(process_dir);
+    await rm(packageID, { recursive: true });
     const { stdout, stderr } = err as { stdout: string; stderr: string };
 
     if (stderr) {
-      await rm(packageID, { recursive: true });
       throw new Error(stderr);
     }
 
-    try {
-      const output: Audit[] = stdout
-        .split("\n")
-        .map((line) => line.replace(/\\n/gm, ""))
-        .filter((line) => line.length)
-        .map((line) => JSON.parse(line));
-
-      await rm(packageID, { recursive: true });
-
-      return output;
-    } catch (err) {
-      await rm(packageID, { recursive: true });
-      throw err;
-    }
+    return formatOutput(stdout);
   }
 };

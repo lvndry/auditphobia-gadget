@@ -1,4 +1,4 @@
-node_modules
 .eslintrc.js
-README.md
 yarn.lock
+*.log
+tsconfig.json

@@ -4,7 +4,7 @@
   "version": "1.0.3",
   "license": "MIT",
   "types": "build/index.d.ts",
-  "main": "build/index.ts",
+  "main": "build/index.js",
   "scripts": {
     "tsc": "tsc",
     "build": "rimraf build && yarn tsc",
@@ -26,5 +26,10 @@
     "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.5.1",
     "typescript": "^4.6.2"
-  }
+  },
+  "homepage": "https://github.com/lvndry/inspecteur-gadget",
+  "keywords": [
+    "audit",
+    "security"
+  ]
 }

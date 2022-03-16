@@ -1,5 +1,4 @@
-.eslintrc.js
-yarn.lock
-*.log
-tsconfig.json
 .editorconfig
+.github
+src
+*.log

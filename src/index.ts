@@ -43,7 +43,7 @@ export interface AuditAdvisoryData {
     recommendation: string;
     references: string;
     reported_by: { name: string } | null;
-    severity: string;
+    severity: "info" | "low" | "moderate" | "high" | "critical";
     updated: string;
     url: string;
     vulnerable_versions: string;

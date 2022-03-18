@@ -1,7 +1,7 @@
 {
   "name": "auditphobia-gadget",
   "description": "Check vulnerablites of npm packages",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "types": "build/index.d.ts",
   "main": "build/index.js",

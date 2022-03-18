@@ -5,15 +5,15 @@ Returns the output of `yarn audit --json` of npm packages
 ## Get started
 
 ```bash
-yarn add inspecteur-gadget
+yarn add auditphobia-gadget
 # or
-npm install inspecteur-gadget
+npm install auditphobia-gadget
 ```
 
 ## Usage
 
 ```ts
-import { generatePacakgeAudit } from "inspecteur-gadget";
+import { generatePacakgeAudit } from "auditphobia-gadget";
 
 const myFunction = async () => {
   try {

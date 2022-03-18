@@ -123,14 +123,14 @@ export const generatePacakgeAudit = async (
     const { stdout } = await exec_async("yarn audit --json");
 
     process.chdir(process_dir);
-    rm(packageID, { recursive: true });
+    await rm(packageID, { recursive: true });
 
     return formatOutput(stdout);
   } catch (err) {
     // yarn audit returns a non-zero exit code if vulnerabilites are found
     // https://classic.yarnpkg.com/lang/en/docs/cli/audit/#toc-yarn-audit
     process.chdir(process_dir);
-    rm(packageID, { recursive: true });
+    await rm(packageID, { recursive: true });
     const { stdout, stderr } = err as { stdout: string; stderr: string };
 
     if (stderr) {

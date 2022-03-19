@@ -28,7 +28,7 @@ export interface AuditAdvisoryData {
     created: string;
     cves: string[];
     cvss: { score: number; vectorString: string } | null;
-    cwe: string;
+    cwe: string[];
     deleted: boolean | null;
     findings: { version: Version; path: string[] }[];
     found_by: { name: string } | null;
@@ -96,7 +96,7 @@ const formatOutput = (output: string): Audit[] => {
     .map((line) => JSON.parse(line));
 };
 
-export const generatePacakgeAudit = async (
+export const generatePackageAudit = async (
   auditedPackage: Package
 ): Promise<Audit[]> => {
   const process_dir = process.cwd();

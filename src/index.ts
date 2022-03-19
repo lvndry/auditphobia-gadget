@@ -56,7 +56,7 @@ export interface AuditAdvisory {
 }
 
 export interface AuditSummaryData {
-  vulnerabilites: {
+  vulnerabilities: {
     info: number;
     low: number;
     moderate: number;

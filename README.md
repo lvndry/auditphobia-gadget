@@ -1,6 +1,6 @@
-# Inspecteur Gadget 🧐
+# Auditphobia Gadget 🧐
 
-Returns the output of `yarn audit --json` of npm packages
+Core tool used by [Auditphobia](https://github.com/lvndry/auditphobia) to get the vulnerabilities of a npm package
 
 ## Get started
 
@@ -21,13 +21,9 @@ const myFunction = async () => {
       name: "auditphobia",
       version: "1.0.0",
     });
-    // [{ type: 'auditAdvisory', ... }]
+    console.log(audit); // [{ type: 'auditAdvisory', ... }]
   } catch (err) {
     // handle error
   }
 };
 ```
-
-## Features
-
-- JSON output

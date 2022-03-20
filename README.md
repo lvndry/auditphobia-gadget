@@ -1,4 +1,4 @@
-# Inspecteur Gadget
+# Inspecteur Gadget 🧐
 
 Returns the output of `yarn audit --json` of npm packages
 
@@ -18,12 +18,16 @@ import { generatePacakgeAudit } from "auditphobia-gadget";
 const myFunction = async () => {
   try {
     const audit = await generatePacakgeAudit({
-      name: "package-name",
-      version: "package-version",
+      name: "auditphobia",
+      version: "1.0.0",
     });
-    console.log(audit);
+    // [{ type: 'auditAdvisory', ... }]
   } catch (err) {
-    console.error(err);
+    // handle error
   }
 };
 ```
+
+## Features
+
+- JSON output

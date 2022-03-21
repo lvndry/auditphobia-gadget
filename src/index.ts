@@ -140,11 +140,3 @@ export const generatePackageAudit = async (
     return formatOutput(stdout);
   }
 };
-
-(async () => {
-  const audit = await generatePackageAudit({
-    name: "create-react-app",
-    version: "5.0.0",
-  });
-  console.log(JSON.stringify(audit, null, 2));
-})();

@@ -119,7 +119,9 @@ export const generatePackageAudit = async (
   );
 
   try {
-    await exec_async("yarn install --mode update-lockfile");
+    await exec_async(
+      "yarn install --mode update-lockfile --ignore-scripts --silent --non-interactive"
+    );
     const { stdout } = await exec_async("yarn audit --json");
 
     process.chdir(process_dir);

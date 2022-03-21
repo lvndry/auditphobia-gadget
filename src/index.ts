@@ -120,7 +120,7 @@ export const generatePackageAudit = async (
 
   try {
     await exec_async(
-      "yarn install --mode update-lockfile --ignore-scripts --silent --non-interactive"
+      "yarn install --ignore-scripts --silent --non-interactive"
     );
     const { stdout } = await exec_async("yarn audit --json");
 
@@ -142,3 +142,11 @@ export const generatePackageAudit = async (
     return formatOutput(stdout);
   }
 };
+
+(async () => {
+  const audit = await generatePackageAudit({
+    name: "create-react-app",
+    version: "5.0.0",
+  });
+  console.log(JSON.stringify(audit, null, 2));
+})();
